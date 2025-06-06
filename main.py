@@ -1,39 +1,29 @@
 import os
-import time
-from datetime import datetime, timedelta
+import asyncio
+from datetime import datetime, timezone
+
 from telegram import Bot
 
-# Хардкодим переменные для проверки
-BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"
-CHAT_ID = "-1002700138488"
+BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"  # или os.getenv("BOT_TOKEN")
+CHAT_ID = "-1002700138488"        # или os.getenv("CHAT_ID")
 
-bot = Bot(token=BOT_TOKEN)
+async def main():
+    bot = Bot(token=BOT_TOKEN)
+    now = datetime.now(timezone.utc)
+    vacation_date = datetime(2025, 7, 1, tzinfo=timezone.utc)  # например, дата отпуска
+    diff = vacation_date - now
 
-def get_seconds_until_target(target_datetime):
-    now = datetime.utcnow()
-    delta = target_datetime - now
-    return max(0, int(delta.total_seconds()))
-
-def format_countdown(seconds):
-    days = seconds // 86400
-    hours = (seconds % 86400) // 3600
+    days = diff.days
+    seconds = diff.seconds
+    hours = seconds // 3600
     minutes = (seconds % 3600) // 60
-    secs = seconds % 60
-    return f"{days} дн {hours} ч {minutes} м {secs} с"
+    seconds = seconds % 60
 
-def main():
-    # Укажи дату и время цели в UTC
-    target = datetime(2025, 7, 26, 23, 59, 59)
+    message = f"До отпуска осталось: {days} дн {hours} ч {minutes} м {seconds} с"
 
-    while True:
-        seconds_left = get_seconds_until_target(target)
-        message = f"До отпуска осталось: {format_countdown(seconds_left)}"
-        try:
-            bot.send_message(chat_id=CHAT_ID, text=message)
-            print(f"Отправлено сообщение: {message}")
-        except Exception as e:
-            print(f"Ошибка при отправке сообщения: {e}")
-        time.sleep(60)
+    await bot.send_message(chat_id=CHAT_ID, text=message)
+    print("Отправлено сообщение:", message)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
+
