@@ -9,7 +9,7 @@ print("Текущее время UTC:", now.isoformat())
 BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"  # или os.getenv("BOT_TOKEN")
 CHAT_ID = "-4874063053"        # или os.getenv("CHAT_ID")
 
-VACATION_DATE = datetime(2025, 7, 27, 15, 11, 0, tzinfo=timezone.utc)  # дата и время отпуска (UTC)
+VACATION_DATE = datetime(2025, 7, 27, 12, 12, 0, tzinfo=timezone.utc)  # дата и время отпуска (UTC)
 
 async def send_countdown():
     bot = Bot(token=BOT_TOKEN)
@@ -34,7 +34,7 @@ async def send_countdown():
         message = f"До отпуска осталось: {days} дн {hours} ч {minutes} м {seconds} с"
 
         # Определяем момент следующей отправки — 14:53 UTC каждый день
-        target_time_today = datetime.combine(now.date(), time(15, 12, 0, tzinfo=timezone.utc))
+        target_time_today = datetime.combine(now.date(), time(12, 13, 0, tzinfo=timezone.utc))
         if now < target_time_today:
             wait_seconds = (target_time_today - now).total_seconds()
             # Ждем до target_time_today, не отправляем сообщение сразу
