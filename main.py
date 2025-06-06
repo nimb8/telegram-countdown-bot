@@ -9,7 +9,7 @@ CHAT_ID = os.getenv("CHAT_ID")
 print("BOT_TOKEN:", BOT_TOKEN)
 print("CHAT_ID:", CHAT_ID)
 
-VACATION_DATE = datetime(2025, 7, 27, 11, 0, 0, tzinfo=timezone.utc)  # дата и время отпуска в UTC
+VACATION_DATE = datetime(2025, 7, 27, 20, 21, 0, tzinfo=timezone.utc)  # дата и время отпуска в UTC
 
 async def send_countdown():
     bot = Bot(token=BOT_TOKEN)
@@ -35,7 +35,7 @@ async def send_countdown():
         print("Отправлено:", message)
 
         # Рассчитываем время до следующего 11:00 UTC
-        target_time_today = datetime.combine(now.date(), time(11, 0, 0, tzinfo=timezone.utc))
+        target_time_today = datetime.combine(now.date(), time(20, 21, 0, tzinfo=timezone.utc))
         if now < target_time_today:
             wait_seconds = (target_time_today - now).total_seconds()
         else:
