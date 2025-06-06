@@ -6,7 +6,7 @@ from telegram import Bot
 BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"  # или os.getenv("BOT_TOKEN")
 CHAT_ID = "-1002700138488"        # или os.getenv("CHAT_ID")
 
-VACATION_DATE = datetime(2025, 7, 27, 14, 34, 0, tzinfo=timezone.utc)  # дата и время отпуска (UTC)
+VACATION_DATE = datetime(2025, 7, 27, 14, 39, 0, tzinfo=timezone.utc)  # дата и время отпуска (UTC)
 
 async def send_countdown():
     bot = Bot(token=BOT_TOKEN)
@@ -33,7 +33,7 @@ async def send_countdown():
         print("Отправлено:", message)
 
         # Рассчитаем сколько секунд ждать до следующего 11:00 UTC
-        target_time_today = datetime.combine(now.date(), time(11, 0, 0, tzinfo=timezone.utc))
+        target_time_today = datetime.combine(now.date(), time(14, 39, 0, tzinfo=timezone.utc))
         if now < target_time_today:
             wait_seconds = (target_time_today - now).total_seconds()
         else:
