@@ -6,6 +6,9 @@ from telegram import Bot
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+print("BOT_TOKEN:", BOT_TOKEN)
+print("CHAT_ID:", CHAT_ID)
+
 VACATION_DATE = datetime(2025, 7, 27, 11, 0, 0, tzinfo=timezone.utc)  # дата и время отпуска в UTC
 
 async def send_countdown():
