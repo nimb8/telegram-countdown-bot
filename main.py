@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Бот работает!"
+    return "Бот работает!!"
 
 # Дата события (например, отпуск)
 event_date = datetime.date(2025, 7, 27)
