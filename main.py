@@ -3,8 +3,8 @@ import asyncio
 from datetime import datetime, timedelta, time, timezone
 from telegram import Bot
 
-BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"  # или os.getenv("BOT_TOKEN")
-CHAT_ID = "-1002700138488"        # или os.getenv("CHAT_ID")
+BOT_TOKEN = ""  # или os.getenv("BOT_TOKEN")
+CHAT_ID = ""        # или os.getenv("CHAT_ID")
 
 VACATION_DATE = datetime(2025, 7, 27, 15, 0, 0, tzinfo=timezone.utc)  # дата и время отпуска (UTC)
 
