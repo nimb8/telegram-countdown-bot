@@ -1,61 +1,39 @@
-from flask import Flask
-import threading
-import time
-import datetime
-import requests
 import os
-import sys
+import time
+from datetime import datetime, timedelta
+from telegram import Bot
 
-app = Flask(__name__)
+# Хардкодим переменные для проверки
+BOT_TOKEN = "7857747352:AAGL6XXQyZlj-6k_U6BV-rFF2wacDRdGjVE"
+CHAT_ID = "-1002700138488"
 
-@app.route('/')
-def home():
-    return "Бот работает!"
+bot = Bot(token=BOT_TOKEN)
 
-# Дата события (например, отпуск)
-event_date = datetime.date(2025, 7, 27)
+def get_seconds_until_target(target_datetime):
+    now = datetime.utcnow()
+    delta = target_datetime - now
+    return max(0, int(delta.total_seconds()))
 
-def get_days_left():
-    today = datetime.date.today()
-    delta = event_date - today
-    return delta.days
+def format_countdown(seconds):
+    days = seconds // 86400
+    hours = (seconds % 86400) // 3600
+    minutes = (seconds % 3600) // 60
+    secs = seconds % 60
+    return f"{days} дн {hours} ч {minutes} м {secs} с"
 
-def send_message(token, chat_id):
-    days = get_days_left()
-    if days > 0:
-        text = f"До отпуска осталось {days} дн."
-    elif days == 0:
-        text = "Отпуск начинается сегодня!!!"
-    else:
-        return  # Если событие прошло, не отправляем сообщение
+def main():
+    # Укажи дату и время цели в UTC
+    target = datetime(2025, 7, 26, 23, 59, 59)
 
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    try:
-        response = requests.post(url, data={"chat_id": chat_id, "text": text})
-        response.raise_for_status()
-    except requests.RequestException as e:
-        print(f"Ошибка при отправке сообщения: {e}")
-
-def scheduler(token, chat_id):
     while True:
-        now = datetime.datetime.utcnow()
-        if now.hour == 11 and now.minute == 0:
-            send_message(token, chat_id)
-            time.sleep(60)
-        time.sleep(30)
+        seconds_left = get_seconds_until_target(target)
+        message = f"До отпуска осталось: {format_countdown(seconds_left)}"
+        try:
+            bot.send_message(chat_id=CHAT_ID, text=message)
+            print(f"Отправлено сообщение: {message}")
+        except Exception as e:
+            print(f"Ошибка при отправке сообщения: {e}")
+        time.sleep(60)
 
 if __name__ == "__main__":
-    print("Переменные окружения в контейнере:")
-    for k, v in os.environ.items():
-        print(f"{k}={v}")
-
-    TOKEN = os.environ.get("BOT_TOKEN")
-    CHAT_ID = os.environ.get("CHAT_ID")
-
-    if not TOKEN or not CHAT_ID:
-        print("Ошибка: Не заданы переменные окружения BOT_TOKEN или CHAT_ID")
-        sys.exit(1)
-
-    threading.Thread(target=scheduler, args=(TOKEN, CHAT_ID), daemon=True).start()
-
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 3000)))
+    main()
