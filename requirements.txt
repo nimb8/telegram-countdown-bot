@@ -1,4 +1,4 @@
 flask
 requests
 python-telegram-bot==20.3
-aiohttp
+aiohttp==3.8.5
