@@ -56,7 +56,7 @@ app.router.add_get('/', handle)
 app.on_startup.append(start_background_tasks)
 
 if __name__ == '__main__':
-    print("PORT env:", os.getenv("PORT"))
     port = int(os.getenv("PORT", 8000))
+    print("PORT env:", os.getenv("PORT"))
     print(f"Starting server on port {port}")
-    web.run_app(app, port=port)
+    web.run_app(app, port=port, host="0.0.0.0")
